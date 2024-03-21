@@ -29,11 +29,13 @@ function Jar() {
           altText="collected"
           label="Накопичено"
           styles={"w-[51%] border-r-[solid] border-r-[1px]"}
+          number={(localStorage.getItem("accumulated") || 0) + " ₴"}
         ></StatsData>
         <StatsData
           iconSrc="./assets/target.svg"
           altText="target"
           label="Ціль"
+          number="200000 ₴"
         ></StatsData>
       </div>
       <div className="mt-auto pb-[42px]"></div>
