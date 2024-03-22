@@ -1,6 +1,7 @@
 import StatsData from "./StatsData";
+import PropTypes from "prop-types";
 
-function Jar() {
+function Jar({ accumulated }) {
   return (
     <div className="w-1/2 bg-gray-100 flex flex-col">
       <img
@@ -29,17 +30,20 @@ function Jar() {
           altText="collected"
           label="Накопичено"
           styles={"w-[51%] border-r-[solid] border-r-[1px]"}
-          number={(localStorage.getItem("accumulated") || 0) + " ₴"}
+          number={accumulated}
         ></StatsData>
         <StatsData
           iconSrc="./assets/target.svg"
           altText="target"
           label="Ціль"
-          number="200000 ₴"
+          number={200000}
         ></StatsData>
       </div>
       <div className="mt-auto pb-[42px]"></div>
     </div>
   );
 }
+Jar.propTypes = {
+  accumulated: PropTypes.number,
+};
 export default Jar;

@@ -1,22 +1,22 @@
 import PaymentButton from "./PaymentButton";
 import { useState } from "react";
+import PropTypes from "prop-types";
 
-function PaymentCard() {
+function PaymentCard({ setParentInputValue }) {
   const [inputWidth, setInputWidth] = useState("w-[1ch]");
   const [inputValue, setInputValue] = useState("");
   const handleInputChange = (e) => {
-    changeWidth(e.target.value);
+    changeInput(e.target.value);
   };
-  const changeWidth = (value) => {
+  const changeInput = (value) => {
+    if (!value.match(/^[0-9]{0,5}$/)) return;
     setInputWidth(value.length);
-  };
-  const validateInput = (e) => {
-    if (isNaN(e.key) && e.keyCode !== 8 && e.keyCode !== 46) e.preventDefault();
+    setInputValue(value);
+    setParentInputValue(value);
   };
   const handlePaymentButtonClick = (amount) => {
     const updatedValue = +inputValue + amount;
-    setInputValue(updatedValue);
-    changeWidth(updatedValue.toString());
+    changeInput(updatedValue.toString());
   };
   return (
     <div
@@ -50,14 +50,10 @@ function PaymentCard() {
           }`}
           placeholder="0"
           onChange={handleInputChange}
-          onKeyDown={validateInput}
         />
         <div className="text-5xl font-bold ml-3 leading-[59px]">₴</div>
       </div>
-      <div className="invisible text-xs font-normal text-[rgb(128,128,128)]">
-        Сума повинна бути від 10 ₴ до 29 999 ₴
-      </div>
-      <div className="flex w-[340px] h-[42px] justify-between mt-[11px]">
+      <div className="flex w-[340px] h-[42px] justify-between mt-[26px]">
         <PaymentButton
           label="+100 ₴"
           onPress={() => handlePaymentButtonClick(100)}
@@ -67,11 +63,15 @@ function PaymentCard() {
           onPress={() => handlePaymentButtonClick(500)}
         ></PaymentButton>
         <PaymentButton
-          label="+1000 ₴"
+          label="+1 000 ₴"
           onPress={() => handlePaymentButtonClick(1000)}
         ></PaymentButton>
       </div>
     </div>
   );
 }
+
+PaymentCard.propTypes = {
+  setParentInputValue: PropTypes.func,
+};
 export default PaymentCard;

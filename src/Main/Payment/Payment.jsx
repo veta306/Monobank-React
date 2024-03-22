@@ -1,23 +1,39 @@
+import PropTypes from "prop-types";
 import PaymentCard from "./PaymentCard";
 import InputContainer from "./InputContainer";
 import PayButton from "./PayButton";
 import CardDetails from "./CardDetails";
 import { useState } from "react";
 
-function Payment() {
+function Payment({ updateAccumulated }) {
   const [showCardDetails, setShowCardDetails] = useState(false);
   const handleCardPaymentClick = () => {
     setShowCardDetails(true);
   };
+  const [paymentSum, setPaymentSum] = useState(0);
+  const onPay = () => {
+    updateAccumulated(+paymentSum);
+    //querySelector🤔?
+    console.log(
+      "Name: " +
+        document.querySelector("#name").value +
+        "\nSurname: " +
+        document.querySelector("#surname") +
+        "\nSum: " +
+        +paymentSum +
+        " ₴"
+    );
+    //clear inputs ....
+  };
   return (
     <div className="w-1/2 flex flex-col">
       <div className={`${showCardDetails ? "mt-0" : "mt-[6px]"}`}>
-        <PaymentCard />
+        <PaymentCard setParentInputValue={setPaymentSum} />
       </div>
       <InputContainer id="name" label="Ваше ім'я (необов'язково)" />
       <InputContainer id="comment" label="Коментар (необов'язково)" />
-      <PayButton src="./assets/mono_pay.svg" alt="monopay" />
-      <PayButton src="./assets/dark_gpay.svg" alt="googlepay" />
+      <PayButton onClick={onPay} src="./assets/mono_pay.svg" alt="monopay" />
+      <PayButton onClick={onPay} src="./assets/dark_gpay.svg" alt="googlepay" />
       <div
         className={`bg-[#ccc] h-px w-[340px] mx-auto my-2 ${
           showCardDetails ? "mt-5 mb-9 mx-auto" : ""
@@ -46,4 +62,7 @@ function Payment() {
     </div>
   );
 }
+Payment.propTypes = {
+  updateAccumulated: PropTypes.func,
+};
 export default Payment;
